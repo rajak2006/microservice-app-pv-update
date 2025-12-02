@@ -3,12 +3,12 @@ kind: PersistentVolumeClaim
 metadata:
   name: catalogue-pvc
 spec:
+  storageClassName: ebs-sc
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -26,20 +26,19 @@ spec:
     spec:
       containers:
       - name: catalogue-service
-        image: <YOUR_ECR_REPO>/catalogue-service:latest
+        image: 602569698931.dkr.ecr.us-east-1.amazonaws.com/catalogue-service:v1
         ports:
         - containerPort: 5000
         env:
         - name: MONGO_URL
           value: "mongodb://mongo:27017/cataloguedb"
         volumeMounts:
-        - name: catalogue-data
-          mountPath: /data/db
+        - mountPath: /app/data   # path inside the container where data will persist
+          name: catalogue-storage
       volumes:
-      - name: catalogue-data
+      - name: catalogue-storage
         persistentVolumeClaim:
           claimName: catalogue-pvc
-
 ---
 apiVersion: v1
 kind: Service
