@@ -1,37 +1,55 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Product = require("./models/Product");
+const pinoHttp = require("pino-http");
+const logger = require("./logger");
+
 const productRoutes = require("./routes/products");
+const Product = require("./models/Product");
 
 const app = express();
 app.use(express.json());
 
-// Connect to MongoDB (using environment variable for DB URL)
+// Log all HTTP requests
+app.use(pinoHttp({ logger }));
+
+// MongoDB connection logs
+mongoose.connection.on("connected", () => {
+  logger.info("MongoDB connected (catalogue-service)");
+});
+mongoose.connection.on("error", (err) => {
+  logger.error({ err }, "MongoDB connection error");
+});
+
+// Connect to DB
 const mongoUrl = process.env.MONGO_URL || "mongodb://mongo:27017/cataloguedb";
 
-mongoose.connect(mongoUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log("MongoDB connected");
-  seedDefaultProducts(); // seed products only if collection is empty
-}).catch(err => console.error("MongoDB connection error:", err));
+mongoose.connect(mongoUrl)
+  .then(() => {
+    logger.info("MongoDB connection successful");
+    seedDefaultProducts();
+  })
+  .catch((err) => logger.error({ err }, "MongoDB connection failed"));
 
 app.use("/products", productRoutes);
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Catalogue service running on port ${port}`));
+// Global error handler
+app.use((err, req, res, next) => {
+  logger.error({ err }, "Unhandled error");
+  res.status(500).json({ error: "Internal server error" });
+});
 
-// Seed default products if none exist
+const port = process.env.PORT || 5000;
+app.listen(port, () => logger.info(`Catalogue service running on ${port}`));
+
 async function seedDefaultProducts() {
   const count = await Product.countDocuments();
   if (count === 0) {
-    const defaultProducts = [
+    await Product.insertMany([
       { name: "Laptop", price: 1200 },
       { name: "Smartphone", price: 800 },
-      { name: "Headphones", price: 150 },
-    ];
-    await Product.insertMany(defaultProducts);
-    console.log("Default products seeded");
+      { name: "Headphones", price: 150 }
+    ]);
+    logger.info("Default products seeded");
   }
 }
+

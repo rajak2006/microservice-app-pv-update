@@ -28,6 +28,13 @@ spec:
           image: 602569698931.dkr.ecr.us-east-1.amazonaws.com/frontend:v1
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "400m"
+              memory: "256Mi"
           env:
             - name: REACT_APP_API_AUTH
               value: "/auth"

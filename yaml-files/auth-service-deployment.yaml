@@ -27,6 +27,13 @@ spec:
           image: 602569698931.dkr.ecr.us-east-1.amazonaws.com/auth-service:latest
           ports:
             - containerPort: 4000
+          resources:
+            requests:
+              cpu: "150m"       # minimum CPU guaranteed
+              memory: "256Mi"   # minimum memory guaranteed
+            limits:
+              cpu: "500m"       # max CPU allowed
+              memory: "512Mi"   # max memory allowed
           env:
             - name: MONGO_URL
               value: "mongodb://mongo:27017/authdb"
