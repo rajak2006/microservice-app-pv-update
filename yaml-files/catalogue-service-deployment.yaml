@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: catalogue-service
-        image: 602569698931.dkr.ecr.us-east-1.amazonaws.com/catalogue-service:v1
+        image: docker.io/rajak2006/catalogue-service:latest
         ports:
         - containerPort: 5000
         resources:

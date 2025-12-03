@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 602569698931.dkr.ecr.us-east-1.amazonaws.com/frontend:v1
+          image: docker.io/rajak2006/frontend:latest
           ports:
             - containerPort: 3000
           resources:
