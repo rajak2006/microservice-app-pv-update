@@ -65,6 +65,10 @@ router.post("/logout", (req, res) => {
   logger.info("Logout called");
   res.json({ message: "Logged out" });
 });
+// Health check endpoint for Kubernetes readinessProbe / ALB
+router.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 
 module.exports = router;
 

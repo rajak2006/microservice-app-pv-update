@@ -29,6 +29,12 @@ spec:
         image: docker.io/rajak2006/catalogue-service:latest
         ports:
         - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /products   # existing route that returns 200
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
         resources:
           requests:
             cpu: "200m"

@@ -28,6 +28,12 @@ spec:
           image: docker.io/rajak2006/frontend:latest
           ports:
             - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /           # frontend responds on /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"
