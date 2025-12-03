@@ -8,6 +8,8 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5,",
+    "pino": "^8.17.0",
+    "pino-http": "^8.3.3"
   }
 }

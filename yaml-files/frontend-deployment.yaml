@@ -25,7 +25,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: docker.io/rajak2006/frontend:latest
+          image: docker.io/rajak2006/frontend:logs
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           readinessProbe:

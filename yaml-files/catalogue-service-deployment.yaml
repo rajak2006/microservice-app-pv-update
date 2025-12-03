@@ -26,7 +26,8 @@ spec:
     spec:
       containers:
       - name: catalogue-service
-        image: docker.io/rajak2006/catalogue-service:latest
+        image: docker.io/rajak2006/catalogue-service:logs
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         readinessProbe:

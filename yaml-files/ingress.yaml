@@ -5,8 +5,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/subnets: subnet-0ea09365867ccac84,subnet-0b2396d712c0bd344
+    alb.ingress.kubernetes.io/subnets: subnet-01f0012db6a1d2d26,subnet-0efa085ff8a4ef370
     alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
 spec:
   ingressClassName: alb
   rules:

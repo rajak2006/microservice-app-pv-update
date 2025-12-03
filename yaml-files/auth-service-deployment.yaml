@@ -24,12 +24,13 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: docker.io/rajak2006/auth-service:latest
+          image: docker.io/rajak2006/auth-service:logs
+          imagePullPolicy: Always
           ports:
             - containerPort: 4000
           readinessProbe:
             httpGet:
-              path: /health  # existing route that returns 200
+              path: /auth/health  # existing route that returns 200
               port: 4000
             initialDelaySeconds: 5
             periodSeconds: 10
