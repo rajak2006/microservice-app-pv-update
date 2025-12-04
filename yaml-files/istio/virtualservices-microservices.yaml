@@ -1,0 +1,65 @@
+# Auth Service
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: auth-service
+  namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - microservices-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /auth
+      route:
+        - destination:
+            host: auth-service.default.svc.cluster.local
+            port:
+              number: 4000
+
+# Catalogue Service
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: catalogue-service
+  namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - microservices-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /products
+      route:
+        - destination:
+            host: catalogue-service.default.svc.cluster.local
+            port:
+              number: 5000
+
+# Frontend
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: frontend
+  namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - microservices-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: frontend.default.svc.cluster.local
+            port:
+              number: 3000
+
