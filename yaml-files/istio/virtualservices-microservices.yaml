@@ -14,7 +14,7 @@ spec:
         - uri:
             prefix: /auth
       rewrite:
-        uri: /      # <- must be "/" instead of ""
+        uri: /      # strip /auth prefix
       route:
         - destination:
             host: auth-service.default.svc.cluster.local
@@ -38,7 +38,7 @@ spec:
         - uri:
             prefix: /products
       rewrite:
-        uri: /      # <- must be "/" instead of ""
+        uri: /      # strip /products prefix
       route:
         - destination:
             host: catalogue-service.default.svc.cluster.local
@@ -67,4 +67,3 @@ spec:
             host: frontend.default.svc.cluster.local
             port:
               number: 3000
-
