@@ -20,7 +20,29 @@ spec:
             host: grafana.istio-system.svc.cluster.local
             port:
               number: 3000
-
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: kiali
+  namespace: istio-system
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - istio-system/microservices-gateway
+  http:
+    # Kiali Dashboard
+    - match:
+        - uri:
+            prefix: /kiali
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: kiali.istio-system.svc.cluster.local
+            port:
+              number: 20001
 # Prometheus
 ---
 apiVersion: networking.istio.io/v1beta1
